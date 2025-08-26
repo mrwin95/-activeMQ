@@ -20,6 +20,22 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=exampledb
+    ports:
+      - "54322:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d exampledb || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 volumes:
   activemq-data:
+  pgdata:
