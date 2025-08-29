@@ -33,7 +33,7 @@ public class OrderController {
 
     @PostMapping
     public OrderEntity create(@RequestBody CreateOrderRequest rq){
-        LOG.info("Received request to create order, {0}, {1}", rq.customerName(), rq.total());
+        LOG.info("Received request to create order, {0}, {1}", rq.customerName, rq.total);
         return orderService.create(rq.customerName(),  rq.total());
     }
 }
