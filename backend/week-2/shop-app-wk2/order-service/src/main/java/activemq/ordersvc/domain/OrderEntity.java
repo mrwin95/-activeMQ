@@ -9,9 +9,12 @@ import java.time.OffsetDateTime;
 @Entity
 @Table(name = "orders")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+//@NoArgsConstructor @AllArgsConstructor
 @Builder
 public class OrderEntity {
+
+    public OrderEntity(){}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;

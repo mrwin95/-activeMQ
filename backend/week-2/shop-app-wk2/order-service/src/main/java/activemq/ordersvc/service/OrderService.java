@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import static activemq.ordersvc.config.JmsConfig.ORDER_CREATED_QUEUE;
+
 @Service
 public class OrderService {
 
@@ -27,18 +29,16 @@ public class OrderService {
 
         // Persist order
 
-        OrderEntity orderEntity = OrderEntity.builder()
-                .customerName(customerName)
-                .total(total)
-                .createdAt(OffsetDateTime.now())
-                .build();
-
+        OrderEntity orderEntity =new OrderEntity();
+        orderEntity.setCustomerName(customerName);
+        orderEntity.setTotal(total);
+        orderEntity.setCreatedAt(OffsetDateTime.now());
         orderRespository.save(orderEntity);
 
         // Publish event JMS locally session
 
         OrderCreatedMessage orderCreatedMessage = new OrderCreatedMessage(orderEntity.getOrderId(), orderEntity.getCustomerName(), orderEntity.getTotal());
-        jmsTemplate.convertAndSend(orderCreatedMessage);
+        jmsTemplate.convertAndSend(ORDER_CREATED_QUEUE, orderCreatedMessage);
         return orderEntity;
     }
 }
