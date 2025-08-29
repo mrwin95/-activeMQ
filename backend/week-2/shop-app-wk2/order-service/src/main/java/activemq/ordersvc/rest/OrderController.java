@@ -18,7 +18,7 @@ public class OrderController {
 
     public static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
-    private record CreateOrderRequest(@NotBlank String customerName,@NotNull BigDecimal total){}
+    private record CreateOrderRequest(@NotBlank String customerName, @NotNull BigDecimal total){}
 
     private final OrderService orderService;
 
@@ -33,6 +33,7 @@ public class OrderController {
 
     @PostMapping
     public OrderEntity create(@RequestBody CreateOrderRequest rq){
+        LOG.info("Received request to create order, {0}, {1}", rq.customerName(), rq.total());
         return orderService.create(rq.customerName(),  rq.total());
     }
 }

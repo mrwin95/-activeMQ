@@ -8,9 +8,7 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "orders")
-@Getter @Setter
-//@NoArgsConstructor @AllArgsConstructor
-@Builder
+
 public class OrderEntity {
 
     public OrderEntity(){}
@@ -27,4 +25,36 @@ public class OrderEntity {
 
     @Column(nullable = false)
     private OffsetDateTime createdAt;
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
