@@ -38,5 +38,9 @@ public class NotificationListener {
             throw e;
         }
 
+//        catch (NonRecoverableInputException bad) {
+//            quarantinePublisher.park(msg); // send copy to quarantine
+//            return;                        // ACK original (no redelivery)
+//        }
     }
 }
