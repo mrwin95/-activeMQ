@@ -15,12 +15,11 @@ public class JmsTopicConfig {
     public static final String NOTIFICATIONS_TOPIC = "notifications.topic";
 
     @Bean
-    public DefaultJmsListenerContainerFactory topicJmsListenerContainerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory, @Value("${app.jms.client_id}") String clientId) {
+    public DefaultJmsListenerContainerFactory topicJmsListenerContainerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setPubSubDomain(true); // topic mode
         factory.setSubscriptionDurable(true); //durable
-        factory.setClientId(clientId);
         factory.setSessionTransacted(true); // local JMS tx per message
         factory.setConcurrency("1-2"); // 1 to 3 consumers (scale concurrency)
         factory.setMessageConverter(jacksonJmsMessageConverter());
