@@ -34,3 +34,21 @@ services:
         condition: service_healthy
     ports:
       - "9981:9981"
+
+  notification-serviceB:
+    build:
+      context: ../backend/week-2/shop-app-wk2
+      dockerfile: notification-service/dev.Dockerfile
+
+    image: notification-service:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: appB
+      SPRING_ARTEMIS_BROKER_URL: tcp://activemq:61616?ha=false
+      SPRING_ARTEMIS_USER: admin
+      SPRING_ARTEMIS_PASSWORD: admin
+      SERVER_PORT: 9982
+    depends_on:
+      activemq:
+        condition: service_healthy
+    ports:
+      - "9982:9982"
