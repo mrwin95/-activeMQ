@@ -16,14 +16,21 @@ public class JmsClientIdConfig {
     public ActiveMQConnectionFactory artemisTargetCf(@Value("${spring.artemis.broker-url}") String url,
                                                      @Value("${spring.artemis.user}") String user,
                                                      @Value("${spring.artemis.password}") String pass) {
-        return new ActiveMQConnectionFactory(url, user, pass);
+        // connection factory with durable clientid
+        var cf = new ActiveMQConnectionFactory(url, user, pass);
+        cf.setInitialConnectAttempts(20);
+        cf.setRetryInterval(1000);
+        cf.setRetryIntervalMultiplier(2.0);
+        cf.setReconnectAttempts(-1);
+        return cf;
     }
 
     @Bean(name = "jmsConnectionFactory")
     @Primary
-    public ConnectionFactory connectionFactory(@Qualifier("artemisTargetCf") ActiveMQConnectionFactory target, @Value("${app.jms.client_id}") String clientId) {
-        SingleConnectionFactory cf = new SingleConnectionFactory(target);
-        cf.setClientId(clientId);
+    public ConnectionFactory connectionFactory(@Qualifier("artemisTargetCf") ActiveMQConnectionFactory target,
+                                               @Value("${app.jms.client_id}") String clientId) {
+        var cf = new SingleConnectionFactory(target);
+        cf.setClientId(clientId); // required for durable
         cf.setReconnectOnException(true);
         return cf;
     }
