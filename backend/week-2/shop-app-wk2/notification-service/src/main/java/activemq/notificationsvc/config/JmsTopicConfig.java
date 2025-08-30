@@ -20,8 +20,9 @@ public class JmsTopicConfig {
         factory.setConnectionFactory(connectionFactory);
         factory.setPubSubDomain(true); // topic mode
         factory.setSubscriptionDurable(true); //durable
+        factory.setSubscriptionShared(true);
         factory.setSessionTransacted(true); // local JMS tx per message
-        factory.setConcurrency("1-2"); // 1 to 3 consumers (scale concurrency)
+        factory.setConcurrency("1-3"); // 1 to 3 consumers (scale concurrency)
         factory.setMessageConverter(jacksonJmsMessageConverter());
 
         factory.setErrorHandler(ex -> {

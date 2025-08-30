@@ -16,8 +16,7 @@ public class JmsClientIdConfig {
     public ActiveMQConnectionFactory artemisTargetCf(@Value("${spring.artemis.broker-url}") String url,
                                                      @Value("${spring.artemis.user}") String user,
                                                      @Value("${spring.artemis.password}") String pass) {
-        ActiveMQConnectionFactory afc = new ActiveMQConnectionFactory(url, user, pass);
-        return  afc;
+        return new ActiveMQConnectionFactory(url, user, pass);
     }
 
     @Bean(name = "jmsConnectionFactory")
