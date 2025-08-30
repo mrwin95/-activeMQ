@@ -1,0 +1,4 @@
+app:
+  jms:
+    client_id: noti-app-A
+    subscription_name: sub-app-A

@@ -1,2 +1,16 @@
 server:
   port: 9981
+spring:
+  application:
+    name: notification-service
+  artemis:
+    mode: native
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+# JPA only if this app writes to DB (optional)
+spring.jpa:
+  open-in-view: false
+
+# Logging
+logging.level.org.springframework.jms: INFO

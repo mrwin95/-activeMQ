@@ -6,6 +6,7 @@
         <groupId>activemq</groupId>
         <artifactId>shop-app-wk2</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>order-service</artifactId>
