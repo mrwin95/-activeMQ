@@ -15,7 +15,7 @@ public class JmsTopicConfig {
     public static final String NOTIFICATIONS_TOPIC = "notifications.topic";
 
     @Bean
-    public DefaultJmsListenerContainerFactory topicJmsListenerContainerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
+    public DefaultJmsListenerContainerFactory topicJmsListenerContainerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory, MessageConverter converter) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setPubSubDomain(true); // topic mode
@@ -23,21 +23,19 @@ public class JmsTopicConfig {
         factory.setSubscriptionShared(true);
         factory.setSessionTransacted(true); // local JMS tx per message
         factory.setConcurrency("1-3"); // 1 to 3 consumers (scale concurrency)
-        factory.setMessageConverter(jacksonJmsMessageConverter());
+        factory.setMessageConverter(converter);
 
-        factory.setErrorHandler(ex -> {
-            org.slf4j.LoggerFactory.getLogger("JMS-ERROR")
-                    .error("JMS listener failed: {}", ex.getMessage(), ex);
-        } );
+        factory.setErrorHandler(ex -> org.slf4j.LoggerFactory.getLogger("JMS-ERROR")
+                .error("JMS listener failed: {}", ex.getMessage(), ex));
 
         return factory;
     }
 
-    @Bean
-    public MessageConverter jacksonJmsMessageConverter(){
-        MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
-        messageConverter.setTargetType(MessageType.TEXT);
-        messageConverter.setTypeIdPropertyName("_type");
-        return messageConverter;
-    }
+//    @Bean
+//    public MessageConverter jacksonJmsMessageConverter(){
+//        MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
+//        messageConverter.setTargetType(MessageType.TEXT);
+//        messageConverter.setTypeIdPropertyName("_type");
+//        return messageConverter;
+//    }
 }
