@@ -14,7 +14,7 @@ public class TopicConfig {
 
     public static final String NOTIFICATIONS_TOPIC = "notifications.topic";
 
-    @Bean
+    @Bean(name = "topicJmsTemplate")
     public JmsTemplate topicJmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory cf) {
         JmsTemplate t = new JmsTemplate(cf);
         t.setPubSubDomain(true);     // <-- Topic mode
@@ -24,7 +24,7 @@ public class TopicConfig {
         return t;
     }
 
-    @Bean
+    @Bean(name = "topicJacksonJmsMessageConverter")
     public MessageConverter jacksonJmsMessageConverter(){
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         messageConverter.setTargetType(MessageType.TEXT);

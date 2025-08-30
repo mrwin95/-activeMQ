@@ -59,7 +59,7 @@ public class JmsConfig {
         return factory;
     }
 
-    @Bean
+    @Bean(name = "queueJmsTemplate")
     public JmsTemplate jmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setDeliveryPersistent(true);
@@ -69,18 +69,18 @@ public class JmsConfig {
     }
 
 
-    @Bean
-    public JmsTemplate topicJmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-        jmsTemplate.setDeliveryPersistent(true);
-        jmsTemplate.setSessionTransacted(true);
-        jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
-        return jmsTemplate;
-    }
+//    @Bean(name = "topicJmsTemplate")
+//    public JmsTemplate topicJmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
+//        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+//        jmsTemplate.setDeliveryPersistent(true);
+//        jmsTemplate.setSessionTransacted(true);
+//        jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
+//        return jmsTemplate;
+//    }
 
 
 
-    @Bean
+    @Bean(name = "queueJacksonJmsMessageConverter")
     public MessageConverter jacksonJmsMessageConverter(){
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         messageConverter.setTargetType(MessageType.TEXT);

@@ -1,4 +1,22 @@
 services:
+  order-service:
+    build:
+      context: ../backend/week-2/shop-app-wk2
+      dockerfile: order-service/dev.Dockerfile
+
+    image: order-service:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_ARTEMIS_BROKER_URL: tcp://activemq:61616?ha=false
+      SPRING_ARTEMIS_USER: admin
+      SPRING_ARTEMIS_PASSWORD: admin
+      SERVER_PORT: 9988
+    depends_on:
+      activemq:
+        condition: service_healthy
+    ports:
+      - "9988:9988"
+
   notification-serviceA:
     build:
       context: ../backend/week-2/shop-app-wk2
