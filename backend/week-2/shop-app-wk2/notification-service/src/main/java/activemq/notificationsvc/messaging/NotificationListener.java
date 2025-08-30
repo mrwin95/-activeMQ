@@ -14,7 +14,12 @@ public class NotificationListener {
 
     @JmsListener(destination = JmsTopicConfig.NOTIFICATIONS_TOPIC, subscription = "${app.jms.subscription_name}", containerFactory = "topicJmsListenerContainerFactory")
     public void onMessage(OrderCreatedMessage msg) {
-        LOG.info("[Notification] orderId={}, customer={}, total={}",
-                msg.orderId(), msg.customerName(), msg.total());
+        try {
+            LOG.info("[Notification] orderId={}, customer={}, total={}",
+                    msg.orderId(), msg.customerName(), msg.total());
+        }catch (Exception e){
+            LOG.error("Unable to process message: {}", msg , e);
+        }
+
     }
 }

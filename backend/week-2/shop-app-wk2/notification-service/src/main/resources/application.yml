@@ -16,4 +16,6 @@ spring.jpa:
   open-in-view: false
 
 # Logging
-logging.level.org.springframework.jms: INFO
+logging:
+  level:
+    org.springframework.jms: DEBUG

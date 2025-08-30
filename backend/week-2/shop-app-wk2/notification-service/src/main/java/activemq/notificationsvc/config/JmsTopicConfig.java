@@ -24,6 +24,11 @@ public class JmsTopicConfig {
         factory.setConcurrency("1-2"); // 1 to 3 consumers (scale concurrency)
         factory.setMessageConverter(jacksonJmsMessageConverter());
 
+        factory.setErrorHandler(ex -> {
+            org.slf4j.LoggerFactory.getLogger("JMS-ERROR")
+                    .error("JMS listener failed: {}", ex.getMessage(), ex);
+        } );
+
         return factory;
     }
 
