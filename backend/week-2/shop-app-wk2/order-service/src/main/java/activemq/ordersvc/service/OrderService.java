@@ -1,5 +1,6 @@
 package activemq.ordersvc.service;
 
+import activemq.ordersvc.config.JmsConfig;
 import activemq.ordersvc.domain.OrderEntity;
 import activemq.ordersvc.messaging.OrderCreatedMessage;
 import activemq.ordersvc.repo.OrderRespository;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-import static activemq.ordersvc.config.JmsConfig.ORDER_CREATED_QUEUE;
 
 @Service
 public class OrderService {
@@ -38,7 +38,7 @@ public class OrderService {
         // Publish event JMS locally session
 
         OrderCreatedMessage orderCreatedMessage = new OrderCreatedMessage(orderEntity.getOrderId(), orderEntity.getCustomerName(), orderEntity.getTotal());
-        jmsTemplate.convertAndSend(ORDER_CREATED_QUEUE, orderCreatedMessage);
+        jmsTemplate.convertAndSend(JmsConfig.ORDER_CREATED_QUEUE, orderCreatedMessage);
         return orderEntity;
     }
 }

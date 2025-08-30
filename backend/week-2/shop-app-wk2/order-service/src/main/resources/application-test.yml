@@ -7,5 +7,7 @@ spring:
 logging:
   level:
     org.springframework.jms: INFO
+    org.springframework.jms.listener.DefaultMessageListenerContainer: ERROR
     org.apache.activemq: INFO
     org.hibernate.SQL: INFO
+

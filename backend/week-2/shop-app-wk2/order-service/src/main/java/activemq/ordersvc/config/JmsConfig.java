@@ -10,6 +10,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.util.backoff.ExponentialBackOff;
 
 
 @Configuration
@@ -25,6 +26,16 @@ public class JmsConfig {
         factory.setSessionTransacted(true); // local JMS tx per message
         factory.setConcurrency("1-3"); // 1 to 3 consumers (scale concurrency)
         factory.setMessageConverter(jacksonJmsMessageConverter());
+
+        // Recover gracefully if the broker isn't ready yet or drops connection
+//        ExponentialBackOff backoff = new ExponentialBackOff();
+//
+//        backoff.setInitialInterval(1000);   // 1s
+//        backoff.setMultiplier(2.0);
+//        backoff.setMaxInterval(15000);      // 15s
+//        factory.setBackOff(backoff);
+
+
         return factory;
     }
 
