@@ -15,7 +15,7 @@ public class NotificationListener {
 
     @JmsListener(destination = JmsTopicConfig.NOTIFICATIONS_TOPIC,
             subscription = "${app.jms.subscription_name}",
-            containerFactory = "topicJmsListenerContainerFactory")
+            containerFactory = "topicListenerFactory")
     public void onMessage(OrderCreatedMessage msg, Message jms) throws Exception {
         int attempt = jms.getIntProperty("JMSXDeliveryCount"); // 1 on first try
         String key = jms.getStringProperty("eventKey"); // if producer sets it
