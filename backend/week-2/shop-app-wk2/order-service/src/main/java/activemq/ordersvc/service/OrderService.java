@@ -1,9 +1,10 @@
 package activemq.ordersvc.service;
 
+import activemq.dto.OrderCreatedMessage;
 import activemq.ordersvc.config.JmsConfig;
 import activemq.ordersvc.config.TopicConfig;
 import activemq.ordersvc.domain.OrderEntity;
-import activemq.ordersvc.messaging.OrderCreatedMessage;
+//import activemq.ordersvc.messaging.OrderCreatedMessage;
 import activemq.ordersvc.repo.OrderRespository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,7 +43,7 @@ public class OrderService {
 
         // Publish event JMS locally session
 
-        OrderCreatedMessage orderCreatedMessage = new OrderCreatedMessage(orderEntity.getOrderId(), orderEntity.getCustomerName(), orderEntity.getTotal());
+        OrderCreatedMessage orderCreatedMessage = new activemq.dto.OrderCreatedMessage(orderEntity.getOrderId(), orderEntity.getCustomerName(), orderEntity.getTotal());
         jmsTemplate.convertAndSend(JmsConfig.ORDER_CREATED_QUEUE, orderCreatedMessage);
 
         // publish to topic

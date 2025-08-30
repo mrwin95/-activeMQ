@@ -1,5 +1,6 @@
 package activemq.ordersvc.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -12,12 +13,19 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 import org.springframework.util.backoff.ExponentialBackOff;
 
+import java.util.Map;
+
 
 @Configuration
 @EnableJms
 public class JmsConfig {
 
     public static final String ORDER_CREATED_QUEUE = "order.created.queue";
+//    private final ObjectMapper objectMapper;
+//
+//    public JmsConfig(ObjectMapper objectMapper) {
+//        this.objectMapper = objectMapper;
+//    }
 
     @Bean
     public DefaultJmsListenerContainerFactory createFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
@@ -81,10 +89,14 @@ public class JmsConfig {
 
 
     @Bean(name = "queueJacksonJmsMessageConverter")
-    public MessageConverter jacksonJmsMessageConverter(){
+    public MessageConverter jacksonJmsMessageConverter() {
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         messageConverter.setTargetType(MessageType.TEXT);
         messageConverter.setTypeIdPropertyName("_type");
+//        messageConverter.setTypeIdMappings(Map.of(
+//                "orderCreated", activemq.ordersvc.messaging.OrderCreatedMessage.class
+//        ));
+//        messageConverter.setObjectMapper(objectMapper);
         return messageConverter;
     }
 }

@@ -1,7 +1,8 @@
 package activemq.notificationsvc.messaging;
 
+import activemq.dto.OrderCreatedMessage;
 import activemq.notificationsvc.config.JmsTopicConfig;
-import activemq.notificationsvc.domain.OrderCreatedMessage;
+//import activemq.notificationsvc.domain.OrderCreatedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;

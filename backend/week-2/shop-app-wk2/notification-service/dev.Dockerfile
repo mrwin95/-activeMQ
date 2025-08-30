@@ -7,7 +7,7 @@ COPY pom.xml ./pom.xml
 COPY . ./
 
 # Build ONLY notification-service (correct flag: -DskipTests)
-RUN mvn -q -DskipTests -f notification-service/pom.xml clean package
+RUN mvn -q -DskipTests -f pom.xml -pl :notification-service -am clean package
 
 # Run stage
 FROM eclipse-temurin:23-jre
