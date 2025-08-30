@@ -1,6 +1,7 @@
 package activemq.ordersvc.service;
 
 import activemq.ordersvc.config.JmsConfig;
+import activemq.ordersvc.config.TopicConfig;
 import activemq.ordersvc.domain.OrderEntity;
 import activemq.ordersvc.messaging.OrderCreatedMessage;
 import activemq.ordersvc.repo.OrderRespository;
@@ -17,11 +18,12 @@ public class OrderService {
 
     private final OrderRespository orderRespository;
     private final JmsTemplate jmsTemplate;
+    private final JmsTemplate topicJmsTemplate;
 
-
-    public OrderService(OrderRespository orderRespository, JmsTemplate jmsTemplate) {
+    public OrderService(OrderRespository orderRespository, JmsTemplate jmsTemplate, JmsTemplate topicJmsTemplate) {
         this.orderRespository = orderRespository;
         this.jmsTemplate = jmsTemplate;
+        this.topicJmsTemplate = topicJmsTemplate;
     }
 
     @Transactional
@@ -39,6 +41,10 @@ public class OrderService {
 
         OrderCreatedMessage orderCreatedMessage = new OrderCreatedMessage(orderEntity.getOrderId(), orderEntity.getCustomerName(), orderEntity.getTotal());
         jmsTemplate.convertAndSend(JmsConfig.ORDER_CREATED_QUEUE, orderCreatedMessage);
+
+        // publish to topic
+
+        topicJmsTemplate.convertAndSend(TopicConfig.NOTIFICATIONS_TOPIC, orderCreatedMessage);
         return orderEntity;
     }
 }

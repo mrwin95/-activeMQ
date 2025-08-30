@@ -40,6 +40,26 @@ public class JmsConfig {
     }
 
     @Bean
+    public DefaultJmsListenerContainerFactory topicJmsContainerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setSessionTransacted(true); // local JMS tx per message
+        factory.setConcurrency("1-3"); // 1 to 3 consumers (scale concurrency)
+        factory.setMessageConverter(jacksonJmsMessageConverter());
+
+        // Recover gracefully if the broker isn't ready yet or drops connection
+//        ExponentialBackOff backoff = new ExponentialBackOff();
+//
+//        backoff.setInitialInterval(1000);   // 1s
+//        backoff.setMultiplier(2.0);
+//        backoff.setMaxInterval(15000);      // 15s
+//        factory.setBackOff(backoff);
+
+
+        return factory;
+    }
+
+    @Bean
     public JmsTemplate jmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setDeliveryPersistent(true);
@@ -47,6 +67,18 @@ public class JmsConfig {
         jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
         return jmsTemplate;
     }
+
+
+    @Bean
+    public JmsTemplate topicJmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+        jmsTemplate.setDeliveryPersistent(true);
+        jmsTemplate.setSessionTransacted(true);
+        jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
+        return jmsTemplate;
+    }
+
+
 
     @Bean
     public MessageConverter jacksonJmsMessageConverter(){
