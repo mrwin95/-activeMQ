@@ -5,4 +5,4 @@ app:
     broadcast:
       subscription_name: notif-broadcast-A
     shared:
-      subscription_name: notif-broadcast-A
+      subscription_name: notif-shared-A
