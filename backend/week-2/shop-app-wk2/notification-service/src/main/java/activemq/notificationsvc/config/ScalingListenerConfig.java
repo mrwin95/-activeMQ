@@ -27,7 +27,7 @@ public class ScalingListenerConfig {
     public DefaultJmsListenerContainerFactory broadcastListenerFactory(ConnectionFactory cf, MessageConverter mc){
         var f = base(cf, mc);
         f.setSubscriptionShared(false);
-        f.setConcurrency("1-4");
+        f.setConcurrency("1"); //MUST be 1 for non-shared durable topics
         return f;
     }
 

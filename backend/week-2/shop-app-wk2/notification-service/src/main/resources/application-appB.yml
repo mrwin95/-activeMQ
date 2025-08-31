@@ -4,3 +4,5 @@ app:
     subscription_name: sub-app-B
     broadcast:
       subscription_name: notif-broadcast-B
+    shared:
+      subscription_name: notif-broadcast-B
