@@ -14,7 +14,7 @@ services:
       - DISABLE_SECURITY=false
       # JAVA_ARGS: "-Xms512m -Xmx512m"     # tune heap; start small for dev
     volumes:
-      - activemq-data:/var/lib/artemis/data
+      - ../backend/db/activemq-data:/var/lib/artemis/data
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8161 || exit 1"]
       interval: 30s
@@ -30,12 +30,16 @@ services:
     ports:
       - "54322:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ../backend/db/postgresql:/var/lib/postgresql/data
+      - ../backend/db/01-users.sql:/docker-entrypoint-initdb.d/01-users.sql
+      - ../backend/db/02-db.sql:/docker-entrypoint-initdb.d/02-db.sql
+      - ../backend/db/03-grants.sql:/docker-entrypoint-initdb.d/03-grants.sql
+      - ../backend/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d exampledb || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
-volumes:
-  activemq-data:
-  pgdata:
+#volumes:
+#  activemq-data:
+#  pgdata:
