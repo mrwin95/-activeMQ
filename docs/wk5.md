@@ -11,3 +11,6 @@ Producer sets a group id:
 5) Horizontal scaling (Docker/K8s)
 
 6) Throughput & resource tuning
+
+
+7) Observability (Actuator + metrics)
