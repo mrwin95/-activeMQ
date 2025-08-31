@@ -22,6 +22,8 @@ public class JmsClientIdConfig {
         cf.setRetryInterval(1000);
         cf.setRetryIntervalMultiplier(2.0);
         cf.setReconnectAttempts(-1);
+
+        cf.setConsumerWindowSize(64 * 1024); // 64k; throughput
         return cf;
     }
 

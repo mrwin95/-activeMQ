@@ -32,6 +32,8 @@ public class TaskController {
     public String create(@RequestParam String description, @RequestParam(defaultValue = "LOW") String priority) {
         TaskMessage messageTask = new TaskMessage(UUID.randomUUID().toString(), description);
         MessagePostProcessor processor = message -> {
+            // set Ordering
+//            message.setStringProperty("JMSXGroupID", messageTask.id());
             message.setStringProperty("priority", priority.toUpperCase());
             return message;
         };
