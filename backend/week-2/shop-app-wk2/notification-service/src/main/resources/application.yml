@@ -1,5 +1,6 @@
 server:
   port: 9981
+  shutdown: graceful
 spring:
   application:
     name: notification-service
@@ -12,8 +13,10 @@ spring:
     cache:
       enabled: false
 # JPA only if this app writes to DB (optional)
-spring.jpa:
-  open-in-view: false
+  jpa:
+    open-in-view: false
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
 
 app:
   jms:
