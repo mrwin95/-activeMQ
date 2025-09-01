@@ -28,12 +28,12 @@ public class JmsConfig {
 //    }
 
     @Bean
-    public DefaultJmsListenerContainerFactory createFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
+    public DefaultJmsListenerContainerFactory createFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory, ObjectMapper om) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setSessionTransacted(true); // local JMS tx per message
         factory.setConcurrency("1-3"); // 1 to 3 consumers (scale concurrency)
-        factory.setMessageConverter(jacksonJmsMessageConverter());
+        factory.setMessageConverter(jacksonJmsMessageConverter(om));
 
         // Recover gracefully if the broker isn't ready yet or drops connection
 //        ExponentialBackOff backoff = new ExponentialBackOff();
@@ -48,12 +48,12 @@ public class JmsConfig {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory topicJmsContainerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
+    public DefaultJmsListenerContainerFactory topicJmsContainerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory, ObjectMapper om) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setSessionTransacted(true); // local JMS tx per message
         factory.setConcurrency("1-3"); // 1 to 3 consumers (scale concurrency)
-        factory.setMessageConverter(jacksonJmsMessageConverter());
+        factory.setMessageConverter(jacksonJmsMessageConverter(om));
 
         // Recover gracefully if the broker isn't ready yet or drops connection
 //        ExponentialBackOff backoff = new ExponentialBackOff();
@@ -68,11 +68,11 @@ public class JmsConfig {
     }
 
     @Bean(name = "queueJmsTemplate")
-    public JmsTemplate jmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory) {
+    public JmsTemplate jmsTemplate(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory, ObjectMapper om) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setDeliveryPersistent(true);
         jmsTemplate.setSessionTransacted(true);
-        jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
+        jmsTemplate.setMessageConverter(jacksonJmsMessageConverter(om));
         return jmsTemplate;
     }
 
@@ -89,14 +89,14 @@ public class JmsConfig {
 
 
     @Bean(name = "queueJacksonJmsMessageConverter")
-    public MessageConverter jacksonJmsMessageConverter() {
-        MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
+    public MessageConverter jacksonJmsMessageConverter(ObjectMapper om) {
+        var messageConverter = new MappingJackson2MessageConverter();
         messageConverter.setTargetType(MessageType.TEXT);
         messageConverter.setTypeIdPropertyName("_type");
-//        messageConverter.setTypeIdMappings(Map.of(
-//                "orderCreated", activemq.ordersvc.messaging.OrderCreatedMessage.class
-//        ));
-//        messageConverter.setObjectMapper(objectMapper);
+        messageConverter.setObjectMapper(om);
+        messageConverter.setTypeIdMappings(Map.of(
+                "orderCreated", activemq.ordersvc.messaging.OrderCreatedMessage.class
+        ));
         return messageConverter;
     }
 }
