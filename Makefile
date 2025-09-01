@@ -1,6 +1,6 @@
 # Default project
 PROJECT_NAME := infra
-POSTGRES_VOLUME := $(PROJECT_NAME)_postgres-data
+POSTGRES_VOLUME := postgresql_postgres_data
 
 # bring up
 up-dev:

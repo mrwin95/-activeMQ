@@ -1,3 +1,15 @@
+create table if not exists processed_events (
+    event_key text primary key,
+    processed_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+create table if not exists notification_logs (
+    order_id bigint primary key,
+    customer_name text not null,
+    total numeric(12,2) not null,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 create table if not exists outbox (
                                       id bigserial primary key,
                                       aggregate_type text not null,

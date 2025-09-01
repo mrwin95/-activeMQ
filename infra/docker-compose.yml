@@ -24,17 +24,18 @@ services:
     image: postgres:16-alpine
     container_name: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=exampledb
+      - POSTGRES_USER=orderuser
+      - POSTGRES_PASSWORD=orderpass
+      - POSTGRES_DB=orderdb
     ports:
       - "54322:5432"
     volumes:
       - ../backend/db/postgresql:/var/lib/postgresql/data
-      - ../backend/db/01-users.sql:/docker-entrypoint-initdb.d/01-users.sql
-      - ../backend/db/02-db.sql:/docker-entrypoint-initdb.d/02-db.sql
-      - ../backend/db/03-grants.sql:/docker-entrypoint-initdb.d/03-grants.sql
-      - ../backend/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ../backend/db/init:/docker-entrypoint-initdb.d:ro
+      # - ../backend/db/01-users.sql:/docker-entrypoint-initdb.d/01-users.sql
+      # - ../backend/db/02-db.sql:/docker-entrypoint-initdb.d/02-db.sql
+      # - ../backend/db/03-grants.sql:/docker-entrypoint-initdb.d/03-grants.sql
+      # - ../backend/db/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d exampledb || exit 1"]
       interval: 30s

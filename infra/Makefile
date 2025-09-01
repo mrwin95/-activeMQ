@@ -24,4 +24,4 @@ reset-db:
 # stop container
 stop:
 	@echo "Stopping containers (volumes preserved)..."
-	docker compose -f infra/docker-compose.yml -f infra/docker-compose.override.yml down
+	docker compose -f infra/docker-compose.yml -f infra/docker-compose.override.yml down -v --remove-orphans
