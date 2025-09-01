@@ -5,7 +5,12 @@ import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "outbox")
+@Table(name = "outbox",
+    indexes = {
+            @Index(name = "outbox_message_id_uk", columnList = "message_id", unique = true),
+            @Index(name = "outbox_pending_idx", columnList = "status, id")
+    }
+)
 public class OutBoxEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
