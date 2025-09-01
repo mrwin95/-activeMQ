@@ -1,6 +1,7 @@
 create table if not exists processed_events (
     event_key text primary key,
-    processed_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    processed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    checksum TEXT
 );
 
 create table if not exists notification_logs (

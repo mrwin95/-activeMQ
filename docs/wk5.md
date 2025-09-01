@@ -14,3 +14,8 @@ Producer sets a group id:
 
 
 7) Observability (Actuator + metrics)
+
+B) Consumer side (notification-service): idempotent & transactional
+
+    1) Dedupe table
+

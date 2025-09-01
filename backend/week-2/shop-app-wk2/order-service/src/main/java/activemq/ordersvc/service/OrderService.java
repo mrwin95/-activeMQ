@@ -72,6 +72,7 @@ public class OrderService {
         var msg = new OrderCreatedMessage(order.getOrderId(), order.getCustomerName(), order.getTotal());
         String eventKey = "order:" + order.getOrderId() + ":v1";
         String json = objectMapper.writeValueAsString(msg);
+
     jdbcTemplate.update("""
         insert into outbox(aggregate_type, aggregate_id,payload,event_key) 
         values('Order', ?, 'OrderCreated', ?::jsonb, ?)
