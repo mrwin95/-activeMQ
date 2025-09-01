@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
             @Index(name = "outbox_pending_idx", columnList = "status, id")
     }
 )
-public class OutBoxEntity {
+public class OutboxEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,10 +31,10 @@ public class OutBoxEntity {
     private OffsetDateTime createdAt = OffsetDateTime.now();
     private OffsetDateTime publishedAt;
 
-    public OutBoxEntity() {
+    public OutboxEntity() {
     }
 
-    public OutBoxEntity(Long id, String aggregateType, String aggregateId, String type, String payload, String messageId, String status, int attempts, String lastError, OffsetDateTime createdAt, OffsetDateTime publishedAt) {
+    public OutboxEntity(Long id, String aggregateType, String aggregateId, String type, String payload, String messageId, String status, int attempts, String lastError, OffsetDateTime createdAt, OffsetDateTime publishedAt) {
         this.id = id;
         this.aggregateType = aggregateType;
         this.aggregateId = aggregateId;
